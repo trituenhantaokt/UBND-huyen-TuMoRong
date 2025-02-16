@@ -7,7 +7,7 @@ def rfile(name_file):
         return content_sys
 
 # Tạo 2 cột: cột 1 cho logo, cột 2 cho thông tin "Xin Chào"
-col1, col2 = st.columns([1, 3])  # Tỷ lệ cột 1:3 (logo chiếm 1 phần, thông tin chiếm 3 phần)
+col1, col2 = st.columns([1, 5])  # Tỷ lệ cột 1:5 (logo chiếm 1 phần, thông tin chiếm 3 phần)
 
 # Hiển thị logo ở cột 1
 with col1:
