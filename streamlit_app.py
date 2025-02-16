@@ -2,78 +2,76 @@ import streamlit as st
 from openai import OpenAI
 
 def rfile(name_file):
-    with open(name_file, "r", encoding="utf-8") as file:
-        content_sys = file.read()
-        return content_sys
+ with open(name_file, "r", encoding="utf-8") as file:
+    content_sys = file.read()
+    return content_sys
 
-# Tùy chỉnh CSS để logo và dòng chữ nằm ngang hàng
+# Hiển thị logo ở trên cùng, căn giữa
+col1, col2, col3 = st.columns([3, 2, 3])
+with col2:
+    st.image("logo.png", width=100)  # Thay 200 bằng kích thước bạn muốn (đơn vị px)
+
+# Tùy chỉnh nội dung tiêu đề
+title_content = rfile("00.xinchao.txt")
+
+# Hiển thị tiêu đề với nội dung tùy chỉnh
 st.markdown(
-    """
-    <style>
-    .stApp {
-        margin-top: -50px;  /* Giảm khoảng cách phía trên */
-    }
-    .logo-text-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;  /* Khoảng cách giữa logo và dòng chữ */
-    }
-    </style>
+    f"""
+    <h1 style="text-align: center; font-size: 20px;">{title_content}</h1>
     """,
     unsafe_allow_html=True
 )
 
-# Tạo container để chứa logo và dòng chữ
-st.markdown(
-    """
-    <div class="logo-text-container">
-        <img src="logo.png" width="100" />
-        <h1 style="font-size: 20px; margin: 0;">Xin Chào, Tôi là trợ lý ảo UBND huyện Tu Mơ Rông, rất vui được trợ giúp, cung cấp các thông tin về quản lí nhà nước của Huyện Tu Mơ Rông!</h1>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-# Lấy OpenAI API key từ `st.secrets`
+# Lấy OpenAI API key từ `st.secrets`.
 openai_api_key = st.secrets.get("OPENAI_API_KEY")
 
-# Tạo OpenAI client
+#1
+
+# Tạo OpenAI client.
 client = OpenAI(api_key=openai_api_key)
 
-# Khởi tạo lời nhắn "system" để định hình hành vi mô hình
+# Khởi tạo lời nhắn "system" để định hình hành vi mô hình.
 INITIAL_SYSTEM_MESSAGE = {
     "role": "system",
-    "content": rfile("01.system_trainning.txt"),
+    "content":rfile("01.system_trainning.txt") ,
 }
 
-# Khởi tạo lời nhắn ví dụ từ vai trò "assistant"
+# Khởi tạo lời nhắn ví dụ từ vai trò "assistant".
 INITIAL_ASSISTANT_MESSAGE = {
     "role": "assistant",
-    "content": rfile("02.assistant.txt"),
+    "content":rfile("02.assistant.txt"),
 }
 
-# Tạo một biến trạng thái session để lưu trữ các tin nhắn nếu chưa tồn tại
+# # Khởi tạo lời nhắn ví dụ từ vai trò "user".
+# INITIAL_USER_MESSAGE = {
+#     "role": "user",
+#     "content": (
+#         "Xin chào trợ lý ảo Funedu! Tôi muốn tìm hiểu thêm về cách sử dụng dịch vụ của bạn. "
+#         "Bạn có thể giúp tôi được không?"
+#     ),
+# }
+
+# Tạo một biến trạng thái session để lưu trữ các tin nhắn nếu chưa tồn tại.
 if "messages" not in st.session_state:
     st.session_state.messages = [INITIAL_SYSTEM_MESSAGE, INITIAL_ASSISTANT_MESSAGE]
 
-# Loại bỏ INITIAL_SYSTEM_MESSAGE khỏi giao diện hiển thị
+# Loại bỏ INITIAL_SYSTEM_MESSAGE khỏi giao diện hiển thị.
 for message in st.session_state.messages:
     if message["role"] != "system":
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-# Tạo ô nhập liệu cho người dùng
+# Tạo ô nhập liệu cho người dùng.
 if prompt := st.chat_input("Nhập nội dung cần hỗ trợ"):
 
-    # Lưu trữ và hiển thị tin nhắn của người dùng
+    # Lưu trữ và hiển thị tin nhắn của người dùng.
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Tạo phản hồi từ API OpenAI
+    # Tạo phản hồi từ API OpenAI.
     stream = client.chat.completions.create(
-        model=rfile("module_chatgpt.txt"),
+        model = rfile("module_chatgpt.txt"),
         messages=[
             {"role": m["role"], "content": m["content"]}
             for m in st.session_state.messages
@@ -81,7 +79,7 @@ if prompt := st.chat_input("Nhập nội dung cần hỗ trợ"):
         stream=True,
     )
 
-    # Hiển thị và lưu phản hồi của trợ lý
+    # Hiển thị và lưu phản hồi của trợ lý.
     with st.chat_message("assistant"):
         response = st.write_stream(stream)
     st.session_state.messages.append({"role": "assistant", "content": response})
