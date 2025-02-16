@@ -1,90 +1,85 @@
 import streamlit as st
 from openai import OpenAI
-import glob  
 
-def read_multiple_files(pattern):
-    """ Đọc nội dung từ nhiều file có cùng mẫu tên và ghép lại """
-    content = []
-    files = sorted(glob.glob(pattern))  
-    for file in files:
-        with open(file, "r", encoding="utf-8") as f:
-            content.append(f.read().strip())  
-    return "\n\n".join(content)  
+def rfile(name_file):
+ with open(name_file, "r", encoding="utf-8") as file:
+    content_sys = file.read()
+    return content_sys
 
-def truncate_text(text, max_tokens=1000):
-    """ Cắt ngắn nội dung chỉ giữ lại số từ quan trọng nhất """
-    words = text.split()
-    return " ".join(words[:max_tokens])  
-
-# Hiển thị logo
+# Hiển thị logo ở trên cùng, căn giữa
 col1, col2, col3 = st.columns([3, 2, 3])
 with col2:
-    st.image("logo.png", use_container_width=True)
+    st.image("logo.png", use_container_width=True)  # Thay use_column_width bằng use_container_width
 
-# Hiển thị tiêu đề từ file
-title_content = read_multiple_files("00.xinchao.txt")
-st.markdown(f"<h1 style='text-align: center; font-size: 24px;'>{title_content}</h1>", unsafe_allow_html=True)
+# Tùy chỉnh nội dung tiêu đề
+title_content = rfile("00.xinchao.txt")
 
-# Lấy OpenAI API key
+# Hiển thị tiêu đề với nội dung tùy chỉnh
+st.markdown(
+    f"""
+    <h1 style="text-align: center; font-size: 24px;">{title_content}</h1>
+    """,
+    unsafe_allow_html=True
+)
+
+# Lấy OpenAI API key từ `st.secrets`.
 openai_api_key = st.secrets.get("OPENAI_API_KEY")
 
-# Tạo OpenAI client
+#1
+
+# Tạo OpenAI client.
 client = OpenAI(api_key=openai_api_key)
 
-# **Đọc và rút gọn nhiều file system training**
-system_content = read_multiple_files("01*.system_trainning.txt")
-system_content = truncate_text(system_content, 1000)  # Giữ nội dung hệ thống ngắn hơn
-INITIAL_SYSTEM_MESSAGE = {"role": "system", "content": system_content}
+# Khởi tạo lời nhắn "system" để định hình hành vi mô hình.
+INITIAL_SYSTEM_MESSAGE = {
+    "role": "system",
+    "content":rfile("01.system_trainning.txt") ,
+}
 
-# Đọc nội dung trợ lý
-assistant_content = read_multiple_files("02.assistant.txt")
-INITIAL_ASSISTANT_MESSAGE = {"role": "assistant", "content": assistant_content}
+# Khởi tạo lời nhắn ví dụ từ vai trò "assistant".
+INITIAL_ASSISTANT_MESSAGE = {
+    "role": "assistant",
+    "content":rfile("02.assistant.txt"),
+}
 
-# **Giới hạn chỉ giữ lại 5-7 tin nhắn gần nhất**
-MAX_MESSAGES = 7  
+# # Khởi tạo lời nhắn ví dụ từ vai trò "user".
+# INITIAL_USER_MESSAGE = {
+#     "role": "user",
+#     "content": (
+#         "Xin chào trợ lý ảo Funedu! Tôi muốn tìm hiểu thêm về cách sử dụng dịch vụ của bạn. "
+#         "Bạn có thể giúp tôi được không?"
+#     ),
+# }
 
+# Tạo một biến trạng thái session để lưu trữ các tin nhắn nếu chưa tồn tại.
 if "messages" not in st.session_state:
     st.session_state.messages = [INITIAL_SYSTEM_MESSAGE, INITIAL_ASSISTANT_MESSAGE]
 
-# Chỉ lưu lại 7 tin nhắn gần nhất
-st.session_state.messages = st.session_state.messages[-MAX_MESSAGES:]
-
-# Hiển thị tin nhắn cũ
+# Loại bỏ INITIAL_SYSTEM_MESSAGE khỏi giao diện hiển thị.
 for message in st.session_state.messages:
     if message["role"] != "system":
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-# Nhập nội dung mới từ người dùng
+# Tạo ô nhập liệu cho người dùng.
 if prompt := st.chat_input("Bạn nhập nội dung cần trao đổi ở đây nhé?"):
 
-    # Lưu và hiển thị tin nhắn của người dùng
+    # Lưu trữ và hiển thị tin nhắn của người dùng.
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Chỉ giữ lại 7 tin nhắn gần nhất trước khi gửi đến OpenAI
-    messages_to_send = st.session_state.messages[-MAX_MESSAGES:]
+    # Tạo phản hồi từ API OpenAI.
+    stream = client.chat.completions.create(
+        model = rfile("module_chatgpt.txt"),
+        messages=[
+            {"role": m["role"], "content": m["content"]}
+            for m in st.session_state.messages
+        ],
+        stream=True,
+    )
 
-    # Gửi tin nhắn đến OpenAI API
-    try:
-        stream = client.chat.completions.create(
-            model=read_multiple_files("module_chatgpt.txt").strip(),
-            messages=[{"role": m["role"], "content": m["content"]} for m in messages_to_send],
-            stream=True,
-        )
-
-        # Hiển thị phản hồi của trợ lý
-        with st.chat_message("assistant"):
-            response_text = ""
-            for chunk in stream:
-                if chunk.choices:
-                    response_text += chunk.choices[0].delta.content or ""  
-
-            st.markdown(response_text)
-
-        # Lưu phản hồi của trợ lý vào session
-        st.session_state.messages.append({"role": "assistant", "content": response_text})
-
-    except Exception as e:
-        st.error(f"Lỗi khi gọi OpenAI API: {str(e)}")
+    # Hiển thị và lưu phản hồi của trợ lý.
+    with st.chat_message("assistant"):
+        response = st.write_stream(stream)
+    st.session_state.messages.append({"role": "assistant", "content": response})
