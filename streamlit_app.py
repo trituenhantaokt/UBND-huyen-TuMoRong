@@ -3,7 +3,8 @@ from openai import OpenAI
 import glob  
 import sys
 import subprocess
-from web import open_url, search
+import requests
+from bs4 import BeautifulSoup
 
 # ✅ Kiểm tra và cài đặt `tiktoken` nếu chưa có
 try:
@@ -11,6 +12,13 @@ try:
 except ModuleNotFoundError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "tiktoken"])
     import tiktoken  
+
+# ✅ Kiểm tra và cài đặt `beautifulsoup4` nếu chưa có
+try:
+    import bs4
+except ModuleNotFoundError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "beautifulsoup4"])
+    from bs4 import BeautifulSoup  
 
 # 🔹 Hàm đọc nội dung từ nhiều file và ghép lại
 def read_multiple_files(pattern):
@@ -33,12 +41,26 @@ def truncate_text(text, max_tokens=1000):
     truncated_tokens = tokens[:max_tokens]  # Giữ lại tối đa max_tokens tokens
     return encoding.decode(truncated_tokens)
 
-# 🔹 Hàm lấy dữ liệu từ trang web khi không có thông tin trong file training
+# 🔹 Hàm lấy dữ liệu từ `https://tintuctonghoponline247.weebly.com/` nếu file training không có thông tin
 def fetch_from_website(query):
     try:
-        website_url = "https://tintuctonghoponline247.weebly.com/"
-        web_result = search(f"{query} site:{website_url}")
-        return web_result if web_result else "Không tìm thấy thông tin trên website."
+        website_url = "https://nguyendinhvinh.com"
+        response = requests.get(website_url, timeout=10)
+        
+        if response.status_code == 200:
+            soup = BeautifulSoup(response.text, "html.parser")
+            paragraphs = soup.find_all("p")  # Lấy tất cả nội dung trong thẻ <p>
+            content = " ".join([p.get_text() for p in paragraphs])
+
+            # Kiểm tra nếu từ khóa có trong nội dung trang web
+            if query.lower() in content.lower():
+                return content[:2000]  # Trả về 2000 ký tự đầu tiên
+            else:
+                return "Không tìm thấy thông tin phù hợp trên website."
+
+        else:
+            return "Không thể truy cập trang web để lấy dữ liệu."
+    
     except Exception as e:
         return f"Lỗi khi truy cập website: {str(e)}"
 
