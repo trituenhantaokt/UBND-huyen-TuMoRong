@@ -6,30 +6,31 @@ def rfile(name_file):
         content_sys = file.read()
         return content_sys
 
-# Tùy chỉnh CSS để logo nằm sát mép trên
+# Tùy chỉnh CSS để logo và dòng chữ nằm ngang hàng
 st.markdown(
     """
     <style>
     .stApp {
         margin-top: -50px;  /* Giảm khoảng cách phía trên */
     }
+    .logo-text-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;  /* Khoảng cách giữa logo và dòng chữ */
+    }
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Hiển thị logo ở trên cùng, căn giữa
-col1, col2, col3 = st.columns([3, 2, 3])
-with col2:
-    st.image("logo.png", width=100)  # Thay đổi kích thước logo tại đây (đơn vị px)
-
-# Tùy chỉnh nội dung tiêu đề
-title_content = rfile("00.xinchao.txt")
-
-# Hiển thị tiêu đề với nội dung tùy chỉnh
+# Tạo container để chứa logo và dòng chữ
 st.markdown(
-    f"""
-    <h1 style="text-align: center; font-size: 20px;">{title_content}</h1>
+    """
+    <div class="logo-text-container">
+        <img src="logo.png" width="100" />
+        <h1 style="font-size: 20px; margin: 0;">Xin Chào, Tôi là trợ lý ảo UBND huyện Tu Mơ Rông, rất vui được trợ giúp, cung cấp các thông tin về quản lí nhà nước của Huyện Tu Mơ Rông!</h1>
+    </div>
     """,
     unsafe_allow_html=True
 )
