@@ -1,107 +1,88 @@
 import streamlit as st
 from openai import OpenAI
-import glob  
-import sys
-import subprocess
+import os
+import datetime
+import re
 
-# 🔹 Kiểm tra và cài đặt `tiktoken` nếu chưa có
-try:
-    import tiktoken
-except ModuleNotFoundError:
-    subprocess.check_call([sys.executable, "-m", "pip", "install", "tiktoken"])
-    import tiktoken  
+# Hàm đọc nội dung từ file
+def rfile(name_file):
+    with open(name_file, "r", encoding="utf-8") as file:
+        return file.read()
 
-# 🔹 Hàm đọc nội dung từ nhiều file và ghép lại
-def read_multiple_files(pattern):
-    content = []
-    files = sorted(glob.glob(pattern))  
-    for file in files:
-        with open(file, "r", encoding="utf-8") as f:
-            content.append(f.read().strip())  
-    return "\n\n".join(content)  
+# Tạo thư mục logs nếu chưa có
+os.makedirs("logs", exist_ok=True)
 
-# 🔹 Hàm đếm số tokens
-def count_tokens(text):
-    encoding = tiktoken.get_encoding("cl100k_base")  # Dùng tokenizer GPT-4
-    return len(encoding.encode(text))
+# Hàm ghi log câu hỏi của người dùng
+def log_user_input(user_input):
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with open("logs/user_questions.log", "a", encoding="utf-8") as log_file:
+        log_file.write(f"[{timestamp}] {user_input}\n")
 
-# 🔹 Hàm rút gọn nội dung nếu vượt quá số token cho phép
-def truncate_text(text, max_tokens=1000):
-    encoding = tiktoken.get_encoding("cl100k_base")
-    tokens = encoding.encode(text)
-    truncated_tokens = tokens[:max_tokens]  # Giữ lại tối đa max_tokens tokens
-    return encoding.decode(truncated_tokens)
+# Hàm nhận diện và chuyển đổi phân số từ "a/b" thành LaTeX "\frac{a}{b}"
+def format_fractions(text):
+    return re.sub(r"(\d+)/(\d+)", r"\\frac{\1}{\2}", text)
 
-# 📌 Hiển thị logo
+# Hiển thị logo ở trên cùng, căn giữa
 col1, col2, col3 = st.columns([3, 2, 3])
 with col2:
     st.image("logo.png", use_container_width=True)
 
-# 📌 Hiển thị tiêu đề từ file
-title_content = read_multiple_files("00.xinchao.txt")
+# Hiển thị tiêu đề từ file
+title_content = rfile("00.xinchao.txt")
 st.markdown(f"<h1 style='text-align: center; font-size: 24px;'>{title_content}</h1>", unsafe_allow_html=True)
 
-# 📌 Lấy OpenAI API key
+# Lấy OpenAI API key từ `st.secrets`.
 openai_api_key = st.secrets.get("OPENAI_API_KEY")
 
-# 📌 Tạo OpenAI client
+# Tạo OpenAI client.
 client = OpenAI(api_key=openai_api_key)
 
-# 🔹 Đọc và rút gọn nội dung hệ thống nếu quá dài
-system_content = read_multiple_files("01*.system_trainning.txt")
-if count_tokens(system_content) > 1000:
-    system_content = truncate_text(system_content, 1000)  # Rút gọn nếu quá dài
-INITIAL_SYSTEM_MESSAGE = {"role": "system", "content": system_content}
+# Khởi tạo lời nhắn "system" để định hình hành vi mô hình.
+INITIAL_SYSTEM_MESSAGE = {"role": "system", "content": rfile("01.system_trainning.txt")}
 
-# 🔹 Đọc nội dung trợ lý
-assistant_content = read_multiple_files("02.assistant.txt")
-INITIAL_ASSISTANT_MESSAGE = {"role": "assistant", "content": assistant_content}
+# Khởi tạo lời nhắn ví dụ từ vai trò "assistant".
+INITIAL_ASSISTANT_MESSAGE = {"role": "assistant", "content": rfile("02.assistant.txt")}
 
-# 🔹 Giới hạn chỉ giữ lại 5-7 tin nhắn gần nhất
-MAX_MESSAGES = 7  
-
+# Tạo một biến trạng thái session để lưu trữ các tin nhắn nếu chưa tồn tại.
 if "messages" not in st.session_state:
     st.session_state.messages = [INITIAL_SYSTEM_MESSAGE, INITIAL_ASSISTANT_MESSAGE]
 
-# 📌 Chỉ giữ lại 7 tin nhắn gần nhất để tránh lỗi context length
-st.session_state.messages = st.session_state.messages[-MAX_MESSAGES:]
-
-# 📌 Hiển thị tin nhắn cũ
+# Loại bỏ INITIAL_SYSTEM_MESSAGE khỏi giao diện hiển thị.
 for message in st.session_state.messages:
     if message["role"] != "system":
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-# 📌 Nhập nội dung mới từ người dùng
+# Khi người dùng nhập nội dung
 if prompt := st.chat_input("Bạn nhập nội dung cần trao đổi ở đây nhé?"):
 
-    # 🔹 Lưu và hiển thị tin nhắn của người dùng
+    # Lưu trữ và hiển thị tin nhắn của người dùng
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # 🔹 Chỉ giữ lại 7 tin nhắn gần nhất trước khi gửi đến OpenAI
-    messages_to_send = st.session_state.messages[-MAX_MESSAGES:]
+    # Ghi lại câu hỏi vào file log
+    log_user_input(prompt)
 
-    # 🔹 Gửi tin nhắn đến OpenAI API
-    try:
-        stream = client.chat.completions.create(
-            model=read_multiple_files("module_chatgpt.txt").strip(),
-            messages=[{"role": m["role"], "content": m["content"]} for m in messages_to_send],
+    # Tạo phản hồi từ API OpenAI
+    response = ""
+    with st.chat_message("assistant"):
+        response_container = st.empty()  # Tạo container để hiển thị nội dung
+
+        for chunk in client.chat.completions.create(
+            model=rfile("module_chatgpt.txt"),
+            messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
             stream=True,
-        )
+        ):
+            if hasattr(chunk, "choices") and chunk.choices:
+                response += chunk.choices[0].delta.content or ""
+                formatted_response = format_fractions(response)
 
-        # 📌 Hiển thị phản hồi của trợ lý
-        with st.chat_message("assistant"):
-            response_text = ""
-            for chunk in stream:
-                if chunk.choices:
-                    response_text += chunk.choices[0].delta.content or ""  
+                # Nếu có công thức toán học, hiển thị bằng st.latex()
+                if "\\" in formatted_response:
+                    response_container.latex(formatted_response)
+                else:
+                    response_container.markdown(formatted_response)
 
-            st.markdown(response_text)
-
-        # 🔹 Lưu phản hồi của trợ lý vào session
-        st.session_state.messages.append({"role": "assistant", "content": response_text})
-
-    except Exception as e:
-        st.error(f"Lỗi khi gọi OpenAI API: {str(e)}")
+    # Lưu phản hồi vào session
+    st.session_state.messages.append({"role": "assistant", "content": response})
