@@ -9,7 +9,7 @@ def rfile(name_file):
 # Hiển thị logo ở trên cùng, căn giữa
 col1, col2, col3 = st.columns([3, 2, 3])
 with col2:
-    st.image("logo.png", width=130)  # Thay 200 bằng kích thước bạn muốn (đơn vị px)
+    st.image("logo.png", width=100)  # Thay 200 bằng kích thước bạn muốn (đơn vị px)
 
 # Tùy chỉnh nội dung tiêu đề
 title_content = rfile("00.xinchao.txt")
