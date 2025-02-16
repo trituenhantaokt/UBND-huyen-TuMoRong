@@ -11,7 +11,7 @@ col1, col2 = st.columns([1, 3])  # Tỷ lệ cột 1:3 (logo chiếm 1 phần, t
 
 # Hiển thị logo ở cột 1
 with col1:
-    st.image("logo.png", width=100)  # Điều chỉnh kích thước logo tại đây (đơn vị px)
+    st.image("logo.png", width=60)  # Điều chỉnh kích thước logo tại đây (đơn vị px)
 
 # Hiển thị thông tin "Xin Chào" ở cột 2
 with col2:
