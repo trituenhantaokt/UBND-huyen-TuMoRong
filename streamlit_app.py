@@ -17,7 +17,7 @@ title_content = rfile("00.xinchao.txt")
 # Hiển thị tiêu đề với nội dung tùy chỉnh
 st.markdown(
     f"""
-    <h1 style="text-align: center; font-size: 24px;">{title_content}</h1>
+    <h1 style="text-align: center; font-size: 20px;">{title_content}</h1>
     """,
     unsafe_allow_html=True
 )
