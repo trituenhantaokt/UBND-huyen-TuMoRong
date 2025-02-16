@@ -5,7 +5,7 @@ A. Một số quy định bạn cần tuân thủ: Trước khi trả lời bấ
 4. Khi hỏi về tên riêng của bất kỳ ai nếu không có trong tệp tệp 01.system_trainning,  thì trả lời "Xin lõi tôi không biết người này". Không được tự ý trả lời bừa bãi.
 5. Sử dụng ngôn ngữ hành chính, lịch sự để trả lời mọi câu hỏi.
 
-B. CÁC THÔNG TIN BẮT BUỘC PHẢI GHI NHỚ ĐỂ TRẢ LỜI THEO
+B. CÁC THÔNG TIN BẮT BUỘC PHẢI GHI NHỚ ĐỂ TRẢ LỜI CÁC CÂU HỎI
 
  I. THƯỜNG TRỰC HUYỆN ỦY
 
@@ -95,7 +95,7 @@ Khoản chi lớn nhất: Chương trình chuyển đổi số và xây dựng n
 Các xã nhận vốn thấp (15 triệu đồng) chủ yếu dành cho các hoạt động khác tại địa phương.
 Huyện Tu Mơ Rông tập trung vào phát triển sản xuất, bảo vệ môi trường, đào tạo cán bộ và chuyển đổi số để xây dựng nền kinh tế nông thôn hiện đại.
 
-F. KẾ HOẠCH SẢN XUẤT NÔNG NGHIỆP - THỦY SẢN THEO ĐỊA BÀN NĂM 2025
+F1. KẾ HOẠCH SẢN XUẤT NÔNG NGHIỆP - THỦY SẢN THEO ĐỊA BÀN NĂM 2025
 (Kèm theo Quyết định số 936/QĐ-UBND, ngày 17 tháng 12 năm 2024 của UBND huyện Tu Mơ Rông)
 
 A. TRỒNG TRỌT
@@ -140,4 +140,118 @@ Diện tích nuôi trồng ao hồ nhỏ: 32,00 ha
 Năng suất trung bình: 35,00 tạ/ha
 D. LÂM NGHIỆP
 Diện tích trồng mới rừng: 200 ha
-Trồng rừng phân tán: 70.700 cây__
+Trồng rừng phân tán: 70.700 cây
+..........................
+F2. KẾ HOẠCH SẢN XUẤT NÔNG NGHIỆP - THỦY SẢN THEO ĐỊA BÀN NĂM 2025
+1. Xã Đăk Na
+• Tổng diện tích trồng trọt: 802,88 ha
+• Cây lương thực: 271,00 ha
+• Sản lượng lương thực có hạt: 941,85 tấn
+• Sản lượng thóc: 880,95 tấn
+• Ngô cả năm: 15,00 ha - 60,90 tấn
+• Sắn: 180,00 ha - 2.475,00 tấn
+• Chăn nuôi: Trâu: 1.200, Bò: 1.700, Lợn: 320, Gia cầm: 3.262
+• Thủy sản: 21,00 tấn - Diện tích: 6,00 ha
+• Lâm nghiệp: 25 ha - Cây trồng phân tán: 7.700 cây
+2. Xã Đăk Sao
+• Tổng diện tích trồng trọt: 657,73 ha
+• Cây lương thực: 161,00 ha
+• Sản lượng lương thực có hạt: 575,28 tấn
+• Sản lượng thóc: 534,68 tấn
+• Ngô cả năm: 10,00 ha - 40,60 tấn
+• Sắn: 190,00 ha - 2.612,50 tấn
+• Chăn nuôi: Trâu: 1.000, Bò: 1.500, Lợn: 1.460, Gia cầm: 6.496
+• Thủy sản: 14,00 tấn - Diện tích: 4,00 ha
+• Lâm nghiệp: 20 ha - Cây trồng phân tán: 6.000 cây
+3 Xã Đăk Rơ Ông
+• Tổng diện tích trồng trọt: 747,97 ha
+• Cây lương thực: 275,00 ha
+• Sản lượng lương thực có hạt: 1.017,62 tấn
+• Sản lượng thóc: 1.001,38 tấn
+• Ngô cả năm: 4,00 ha - 16,24 tấn
+• Sắn: 180,00 ha - 2.475,36 tấn
+• Chăn nuôi: Trâu: 1.150, Bò: 1.325, Lợn: 450, Gia cầm: 5.200
+• Thủy sản: 7,00 tấn - Diện tích: 2,00 ha
+• Lâm nghiệp: 10 ha - Cây trồng phân tán: 6.000 cây
+4. Xã Đăk Tờ Kan
+• Tổng diện tích trồng trọt: 812,69 ha
+• Cây lương thực: 172,50 ha
+• Sản lượng lương thực có hạt: 678,20 tấn
+• Sản lượng thóc: 678,20 tấn
+• Ngô cả năm: Không có
+• Sắn: 300,00 ha - 4.125,00 tấn
+• Chăn nuôi: Trâu: 500, Bò: 650, Lợn: 4.170, Gia cầm: 6.735
+• Thủy sản: 17,43 tấn - Diện tích: 4,98 ha
+• Lâm nghiệp: 40 ha - Cây trồng phân tán: 6.000 cây
+5. Xã Đăk Hà
+• Tổng diện tích trồng trọt: 1.091,54 ha
+• Cây lương thực: 86,50 ha
+• Sản lượng lương thực có hạt: 304,98 tấn
+• Sản lượng thóc: 264,38 tấn
+• Ngô cả năm: 10,00 ha - 40,60 tấn
+• Sắn: 350,00 ha - 4.812,50 tấn
+• Chăn nuôi: Trâu: 400, Bò: 700, Lợn: 350, Gia cầm: 3.290
+• Thủy sản: 22,75 tấn - Diện tích: 6,50 ha
+• Lâm nghiệp: 10 ha - Cây trồng phân tán: 7.000 cây
+5. Xã Tu Mơ Rông
+• Tổng diện tích trồng trọt: 659,43 ha
+• Cây lương thực: 123,00 ha
+• Sản lượng lương thực có hạt: 449,83 tấn
+• Sản lượng thóc: 417,35 tấn
+• Ngô cả năm: 8,00 ha - 32,48 tấn
+• Sắn: 100,00 ha - 1.375,00 tấn
+• Chăn nuôi: Trâu: 445, Bò: 700, Lợn: 450, Gia cầm: 2.851
+• Thủy sản: 4,90 tấn - Diện tích: 1,40 ha
+• Lâm nghiệp: 25 ha - Cây trồng phân tán: 6.000 cây
+7.Xã Tê Xăng
+• Tổng diện tích trồng trọt: 836,60 ha
+• Cây lương thực: 108,00 ha
+• Sản lượng lương thực có hạt: 390,54 tấn
+• Sản lượng thóc: 390,54 tấn
+• Ngô cả năm: 20,00 ha - 81,20 tấn
+• Sắn: 90,00 ha - 1.237,50 tấn
+• Chăn nuôi: Trâu: 450, Bò: 500, Lợn: 200, Gia cầm: 1.287
+• Thủy sản: 3,43 tấn - Diện tích: 0,98 ha
+• Lâm nghiệp: 20 ha - Cây trồng phân tán: 8.000 cây
+8. Xã Măng Ri
+• Tổng diện tích trồng trọt: 991,49 ha
+• Cây lương thực: 184,00 ha
+• Sản lượng lương thực có hạt: 674,67 tấn
+• Sản lượng thóc: 593,47 tấn
+• Ngô cả năm: 5,00 ha - 20,30 tấn
+• Sắn: 20,00 ha - 275,00 tấn
+• Chăn nuôi: Trâu: 580, Bò: 700, Lợn: 575, Gia cầm: 1.153
+• Thủy sản: 1,05 tấn - Diện tích: 0,30 ha
+• Lâm nghiệp: 25 ha - Cây trồng phân tán: 6.000 cây
+9. Xã Ngọk Yêu
+• Tổng diện tích trồng trọt: 942,89 ha
+• Cây lương thực: 124,00 ha
+• Sản lượng lương thực có hạt: 441,42 tấn
+• Sản lượng thóc: 421,12 tấn
+• Ngô cả năm: 20,00 ha - 81,20 tấn
+• Sắn: 160,00 ha - 2.200,00 tấn
+• Chăn nuôi: Trâu: 750, Bò: 600, Lợn: 350, Gia cầm: 2.900
+• Thủy sản: 8,82 tấn - Diện tích: 2,52 ha
+• Lâm nghiệp: 25 ha - Cây trồng phân tán: 6.000 cây
+10. Xã Văn Xuôi
+• Tổng diện tích trồng trọt: 488,30 ha
+• Cây lương thực: 116,00 ha
+• Sản lượng lương thực có hạt: 432,71 tấn
+• Sản lượng thóc: 351,51 tấn
+• Ngô cả năm: 8,00 ha - 32,48 tấn
+• Sắn: 174,00 ha - 2.392,50 tấn
+• Chăn nuôi: Trâu: 600, Bò: 670, Lợn: 250, Gia cầm: 3.280
+• Thủy sản: 2,66 tấn - Diện tích: 0,76 ha
+• Lâm nghiệp: 25 ha - Cây trồng phân tán: 6.000 cây
+11. Xã Ngọk Lây
+• Tổng diện tích trồng trọt: 1.091,94 ha
+• Cây lương thực: 142,00 ha
+• Sản lượng lương thực có hạt: 511,05 tấn
+• Sản lượng thóc: 478,57 tấn
+• Ngô cả năm: Không có
+• Sắn: 121,00 ha - 1.663,75 tấn
+• Chăn nuôi: Trâu: 726, Bò: 580, Lợn: 350, Gia cầm: 4.125
+• Thủy sản: 8,96 tấn - Diện tích: 2,56 ha
+• Lâm nghiệp: 25 ha - Cây trồng phân tán: 6.000 cây
+
+
